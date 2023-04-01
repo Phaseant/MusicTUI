@@ -15,7 +15,7 @@ type AlbumModel struct {
 }
 
 func InitAlbumView(album MusicTUI.Album) *AlbumModel {
-	m := AlbumModel{album: album, content: utils.ContentBuilder(album)}
+	m := AlbumModel{album: album, content: utils.ContentBuilder(album, WindowSize)}
 
 	m.viewport = viewport.New(20, 20)
 
@@ -52,6 +52,8 @@ func (m AlbumModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.viewport.Height = msg.Height - h
 		m.viewport.Width = msg.Width - w
 		WindowSize = msg
+		m.content = utils.ContentBuilder(m.album, msg)
+		m.viewport.SetContent(m.content)
 	}
 
 	// Handle keyboard and mouse events in the viewport
@@ -63,11 +65,4 @@ func (m AlbumModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m AlbumModel) View() string {
 	return m.viewport.View()
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }

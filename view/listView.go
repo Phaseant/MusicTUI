@@ -5,6 +5,7 @@ import (
 	"github.com/Phaseant/MusicTUI/utils"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -17,6 +18,19 @@ type item struct {
 	title       string
 	description string
 }
+
+func InitDelegateStyle() list.DefaultItemStyles {
+	style := list.DefaultItemStyles{}
+
+	style.SelectedTitle.Foreground(YellowColor)
+	style.SelectedDesc.Foreground(YellowColor)
+
+	style.FilterMatch.Foreground(YellowColor)
+
+	return style
+}
+
+var listStyle = lipgloss.NewStyle().Background(YellowColor).Foreground(BlackColor)
 
 func (i item) Title() string       { return i.title }
 func (i item) Description() string { return i.description }
@@ -36,9 +50,17 @@ func InitListView() (tea.Model, tea.Cmd) {
 		items = append(items, item{Album: el, title: el.Title, description: el.Author})
 	}
 
-	// setup list
-	m := ListModel{list: list.New(items, list.NewDefaultDelegate(), 10, 10)}
+	delegate := list.NewDefaultDelegate()
 
+	delegate.Styles.SelectedTitle.Foreground(YellowColor)
+	delegate.Styles.SelectedDesc.Foreground(YellowColor)
+
+	delegate.Styles.FilterMatch.Foreground(YellowColor)
+
+	// setup list
+	m := ListModel{list: list.New(items, delegate, 10, 10)}
+
+	m.list.Styles.Title = listStyle
 	w, h := docStyle.GetFrameSize()
 	if WindowSize.Width != 0 {
 		m.list.SetSize(WindowSize.Width-w, WindowSize.Height-h)
