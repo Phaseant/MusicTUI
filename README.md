@@ -1,6 +1,6 @@
 # MusicTUI
 
-Client for my REST music server. Made in Go with love ❤️
+Client for my REST API Music Server. Made in Go with love ❤️
 
 ## Demo
 <p align="center">
