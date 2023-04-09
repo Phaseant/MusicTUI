@@ -14,6 +14,7 @@ This application is client for my REST API Music Server. You need to install thi
 
 ## Installation
 ```
-go install github.com/Phaseant/MusicTUI@latest
+cd /PATH/TO/YOUR/REPO/MusicTUI
+go run cmd/main.go
 ```
 
